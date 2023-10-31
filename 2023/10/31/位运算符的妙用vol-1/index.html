@@ -1,16 +1,20 @@
 <!doctype html>
 <html lang="en"><head>
-<title>M1MisakaMikoto&#39;s Blog</title>
+<title>位运算符的妙用vol.1 - M1MisakaMikoto&#39;s Blog</title>
 <meta charset="UTF-8">
 <meta name="keywords" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<meta property="og:type" content="website">
-<meta property="og:title" content="M1MisakaMikoto&#39;s Blog">
-<meta property="og:url" content="http://m1misakamikoto.github.io/index.html">
+<meta name="description" content="位运算符的妙用vol.1&lt;&lt;左移运算符代替乘法先放定义：左移运算符是一个C++中的一种位操作符。用来将一个数的各二进制位全部左移若干位，移动的位数由右操作数指定，右操作数必须是非负值，其右边空出的位用0填补，高位左移溢出则舍弃该高位 举个栗子一是进制数 9 转为二进制是 0000 1001对 0000 1001 进行左移一位的操作后得到 0001 00100001 0010 对应的数就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算符的妙用vol.1">
+<meta property="og:url" content="http://m1misakamikoto.github.io/2023/10/31/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1/index.html">
 <meta property="og:site_name" content="M1MisakaMikoto&#39;s Blog">
+<meta property="og:description" content="位运算符的妙用vol.1&lt;&lt;左移运算符代替乘法先放定义：左移运算符是一个C++中的一种位操作符。用来将一个数的各二进制位全部左移若干位，移动的位数由右操作数指定，右操作数必须是非负值，其右边空出的位用0填补，高位左移溢出则舍弃该高位 举个栗子一是进制数 9 转为二进制是 0000 1001对 0000 1001 进行左移一位的操作后得到 0001 00100001 0010 对应的数就">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-10-31T13:25:03.000Z">
+<meta property="article:modified_time" content="2023-10-31T15:38:30.312Z">
 <meta property="article:author" content="M1MisakaMikoto">
 <meta name="twitter:card" content="summary">
 
@@ -18,15 +22,15 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698767148076">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698767148092">
 
-<link rel="stylesheet" href="/css/style.css?v=1698767148077">
+<link rel="stylesheet" href="/css/style.css?v=1698767148092">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1698767148077">
+        <link rel="stylesheet" href="/custom.css?v=1698767148092">
     
 
 
@@ -36,7 +40,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1698767148077"></script>
+<script async src="/js/app.js?v=1698767148092"></script>
 
  
 
@@ -177,7 +181,7 @@ mjx-container[display="true"] + br {
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
         
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple true" href="/" title="回到首页">
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
             <i class="mdui-list-item-icon nexmoefont icon-home"></i>
             <div class="mdui-list-item-content">
                 回到首页
@@ -205,7 +209,7 @@ mjx-container[display="true"] + br {
             </div>
         </a>
         
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple true" href="/" title="关于博主">
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="关于博主">
             <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
             <div class="mdui-list-item-content">
                 关于博主
@@ -397,18 +401,16 @@ mjx-container[display="true"] + br {
         & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
         
     </div>
-</div><!-- .nexmoe-drawer --></div><div id="nexmoe-content"><div class="nexmoe-primary"><section class="nexmoe-posts">
-    <div class="nexmoe-post">
-        <a href="/2023/10/31/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1/">
-            
-                <div class="nexmoe-post-cover mdui-ripple"> 
-                    <img src="/images/Screenshot 2023-10-30 135507.png" alt="位运算符的妙用vol.1" loading="lazy">
-                    <h1>位运算符的妙用vol.1</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta">
+</div><!-- .nexmoe-drawer --></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post">
+  <article>
+    
+        <div class="nexmoe-post-cover"> 
+            <img src="/images/Screenshot 2023-10-30 135507.png" alt="位运算符的妙用vol.1" loading="lazy">
+            <h1>位运算符的妙用vol.1</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
     <div class="nexmoe-rainbow">
         <a class="nexmoefont icon-calendar-fill">2023年10月31日</a>
         
@@ -423,106 +425,58 @@ mjx-container[display="true"] + br {
     
 </div>
 
-        <article>
-            
-        </article>
+    <h1 id="位运算符的妙用vol-1"><a href="#位运算符的妙用vol-1" class="headerlink" title="位运算符的妙用vol.1"></a>位运算符的妙用vol.1</h1><h3 id="lt-lt-左移运算符代替-2-n-乘法"><a href="#lt-lt-左移运算符代替-2-n-乘法" class="headerlink" title="<<左移运算符代替$2^n$乘法"></a>&lt;&lt;左移运算符代替<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.279ex" height="1.528ex" role="img" focusable="false" viewbox="0 -675.5 1007.3 675.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"/></g><g data-mml-node="mi" transform="translate(533,363) scale(0.707)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"/></g></g></g></g></svg></mjx-container>乘法</h3><p><strong>先放定义</strong>：左移运算符是一个C++中的一种位操作符。用来将一个数的各二进制位全部左移若干位，移动的位数由右操作数指定，右操作数必须是非负值，其右边空出的位用0填补，高位左移溢出则舍弃该高位</p>
+<p><strong>举个栗子</strong><br>一是进制数 9 转为二进制是 0000 1001<br>对 0000 1001 进行<strong>左移一位</strong>的操作后得到 0001 0010<br>0001 0010 对应的数就是 18</p>
+<p><em>为什么有这样的规律？</em><br>将二进制数x2 可以看做对每一位二进制数字x2<br>若该位数字是 0, x2后无变化<br>若该位数字是 1, x2后变为 10<br>最终该数在形式上的变化就是左移了一位</p>
+<p><strong>优势</strong><br>运算速度比乘法更快 运算消耗更少</p>
+<h3 id="gt-gt-右移运算符代替-2-n-除法"><a href="#gt-gt-右移运算符代替-2-n-除法" class="headerlink" title=">>右移运算符代替$2^n$除法"></a>&gt;&gt;右移运算符代替<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.279ex" height="1.528ex" role="img" focusable="false" viewbox="0 -675.5 1007.3 675.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"/></g><g data-mml-node="mi" transform="translate(533,363) scale(0.707)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"/></g></g></g></g></svg></mjx-container>除法</h3><h5 id="同上"><a href="#同上" class="headerlink" title="同上"></a>同上</h5><h2 id="nbsp"><a href="#nbsp" class="headerlink" title=" "></a> </h2><h3 id="或运算符将偶数-1"><a href="#或运算符将偶数-1" class="headerlink" title="|或运算符将偶数+1"></a>|或运算符将偶数+1</h3><p><strong>举个栗子</strong><br>2 | 1 = 3<br><em>why?:</em><br>十进制偶数 2 对应二进制数 0010<br>十进制偶数 4 对应二进制数 0100<br>十进制偶数 6 对应二进制数 0110<br>十进制偶数 8 对应二进制数 1000<br>十进制偶数对应的二进制数的个一定是 0<br>0 与 1 进行或运算结果是 1<br>反映在十进制数中就是将偶数+1变为奇数</p>
+<h3 id="amp-与运算符将奇数-1"><a href="#amp-与运算符将奇数-1" class="headerlink" title="&与运算符将奇数-1"></a>&amp;与运算符将奇数-1</h3><p><strong>举个栗子</strong><br>3 &amp; 0 = 2<br><em>why?:</em><br><strong>与或运算符将偶数+1原理类似</strong></p>
+
+    <p><img src="/images/end.gif" loading="lazy"></p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>M1MisakaMikoto<br>
+        <strong>Link：</strong><a href="http://m1misakamikoto.github.io/2023/10/31/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1/" title="http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;10&#x2F;31&#x2F;%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;10&#x2F;31&#x2F;%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+
+        
     </div>
 
-    <div class="nexmoe-post">
-        <a href="/2023/10/30/%E5%89%8D%E7%BC%80%E5%92%8C/">
-            
-                <div class="nexmoe-post-cover mdui-ripple"> 
-                    <img src="/images/Screenshot 2023-10-30 135507.png" alt="前缀和" loading="lazy">
-                    <h1>前缀和</h1>
-                </div>
-            
-        </a>
 
-        <div class="nexmoe-post-meta">
-    <div class="nexmoe-rainbow">
-        <a class="nexmoefont icon-calendar-fill">2023年10月30日</a>
-        
-            <a class="nexmoefont icon-appstore-fill -link" href="/categories/CS/">CS</a>
-        
-        
-    </div>
-    
-    
-    
-    
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
     
 </div>
+  
+  
+    <script async src="/js/copy-codeblock.js?v=1698767148051"></script>
+  
 
-        <article>
-            
-        </article>
-    </div>
-
-    <div class="nexmoe-post">
-        <a href="/2023/10/30/2023-10-30-LearningRecord/">
-            
-                <div class="nexmoe-post-cover mdui-ripple"> 
-                    <img src="/images/Screenshot 2023-10-30 135507.png" alt="2023-10-30-LearningRecord" loading="lazy">
-                    <h1>2023-10-30-LearningRecord</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta">
-    <div class="nexmoe-rainbow">
-        <a class="nexmoefont icon-calendar-fill">2023年10月30日</a>
-        
-            <a class="nexmoefont icon-appstore-fill -link" href="/categories/CS/">CS</a>
-        
-        
-    </div>
-    
-    
-    
-    
-    
-</div>
-
-        <article>
-            
-        </article>
-    </div>
-
-    <div class="nexmoe-post">
-        <a href="/2023/10/29/2023-10-29-LearningRecord/">
-            
-                <div class="nexmoe-post-cover mdui-ripple"> 
-                    <img src="/images/Screenshot 2023-10-30 135507.png" alt="2023-10-29-LearningRecord" loading="lazy">
-                    <h1>2023-10-29-LearningRecord</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta">
-    <div class="nexmoe-rainbow">
-        <a class="nexmoefont icon-calendar-fill">2023年10月29日</a>
-        
-            <a class="nexmoefont icon-appstore-fill -link" href="/categories/CS/">CS</a>
-        
-        
-    </div>
-    
-    
-    
-    
-    
-</div>
-
-        <article>
-            
-        </article>
-    </div>
-</section> </div><div class="nexmoe-post-right">    <div class="nexmoe-fixed">
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div></div><div class="nexmoe-post-right">    <div class="nexmoe-fixed">
         <div class="nexmoe-tool">
 
             
 
             
+            
+            <button class="mdui-fab catalog" style="overflow:unset;">
+                <i class="nexmoefont icon-i-catalog"></i>
+                <div class="nexmoe-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1"><span class="toc-number">1.</span> <span class="toc-text">位运算符的妙用vol.1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lt-lt-%E5%B7%A6%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BB%A3%E6%9B%BF-2-n-%E4%B9%98%E6%B3%95"><span class="toc-number">1.0.1.</span> <span class="toc-text">&lt;&lt;左移运算符代替乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-gt-%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BB%A3%E6%9B%BF-2-n-%E9%99%A4%E6%B3%95"><span class="toc-number">1.0.2.</span> <span class="toc-text">&gt;&gt;右移运算符代替除法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%8C%E4%B8%8A"><span class="toc-number">1.0.2.0.1.</span> <span class="toc-text">同上</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nbsp"><span class="toc-number">1.1.</span> <span class="toc-text"> </span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B0%86%E5%81%B6%E6%95%B0-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">|或运算符将偶数+1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B0%86%E5%A5%87%E6%95%B0-1"><span class="toc-number">1.1.2.</span> <span class="toc-text">&amp;与运算符将奇数-1</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </button>
             
 
             
