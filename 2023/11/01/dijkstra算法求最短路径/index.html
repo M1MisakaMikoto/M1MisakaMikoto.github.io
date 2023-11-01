@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step5.png">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step6.png">
 <meta property="article:published_time" content="2023-11-01T11:27:46.000Z">
-<meta property="article:modified_time" content="2023-11-01T16:17:39.568Z">
+<meta property="article:modified_time" content="2023-11-01T16:26:42.109Z">
 <meta property="article:author" content="M1MisakaMikoto">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png">
@@ -30,15 +30,15 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698855513842">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698856012486">
 
-<link rel="stylesheet" href="/css/style.css?v=1698855513842">
+<link rel="stylesheet" href="/css/style.css?v=1698856012486">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1698855513842">
+        <link rel="stylesheet" href="/custom.css?v=1698856012486">
     
 
 
@@ -48,7 +48,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1698855513842"></script>
+<script async src="/js/app.js?v=1698856012486"></script>
 
  
 
@@ -443,17 +443,17 @@ mjx-container[display="true"] + br {
         volume: 0.7, //默认音量，请注意播放器会记忆用户设置，用户手动设置音量后默认音量即失效
         fixed: true, //吸底模式（fixed:true），迷你模式（mini:true），普通模式（注释此行或者设置fixed:false）
         audio: [{
-            name: 'All For Love',
-            artist: 'Tungevaag & Raaban',
-            lrc: '/lrc/Tungevaag & Raaban - All For Love.lrc',
-            cover: '/images/Tungevaag & Raaban - All For Love.jpg',
-            url: '/music/Tungevaag & Raaban - All For Love.mp3'
-          },{
             name: 'Childhood Dreams',
             artist: 'Gaminl',
             lrc: '/lrc/Gaminl - Childhood Dreams.lrc',
             cover: '/images/Gaminl - Childhood Dreams.jpg',
             url: '/music/Gaminl - Childhood Dreams.mp3'
+          },{
+            name: 'All For Love',
+            artist: 'Tungevaag & Raaban',
+            lrc: '/lrc/Tungevaag & Raaban - All For Love.lrc',
+            cover: '/images/Tungevaag & Raaban - All For Love.jpg',
+            url: '/music/Tungevaag & Raaban - All For Love.mp3'
           }
         ]
       });
@@ -503,7 +503,8 @@ mjx-container[display="true"] + br {
 <li>然后，从数组U中找出路径最短的顶点K，并将其加入到数组S中；同时，从数组U中移除顶点K。接着，更新数组U中的各顶点到起点D的距离。</li>
 <li>重复第4步操作，直到遍历完所有顶点。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png" alt="import01.png" data-caption="import01.png" loading="lazy"></li>
 </ol>
-<h1 id="我的思考"><a href="#我的思考" class="headerlink" title="我的思考"></a>我的思考</h1><p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step1.png" alt="step1.png" data-caption="step1.png" loading="lazy"><br><em>至此,我们凭什么认为C-&gt;D已经找到了最小路径呢？</em></p>
+<h1 id="我的思考"><a href="#我的思考" class="headerlink" title="我的思考"></a>我的思考</h1><p><strong>图中我用绿色标记已经存入S[]中的节点，黄色标记已经计算过某条路径的节点（不一定是最小值）即U[]中非无穷大的节点</strong></p>
+<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step1.png" alt="step1.png" data-caption="step1.png" loading="lazy"><br><em>至此,我们凭什么认为C-&gt;D已经找到了最小路径呢？</em></p>
 <div class="table-container">
 <table>
 <thead>
@@ -646,7 +647,7 @@ mjx-container[display="true"] + br {
 </div>
 <p> <br> </p>
 <h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p><strong>参考实现方法:</strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37648020/article/details/83628375">路径规划求最短路径——Dijkstra算法一步一步讲清楚（附代码/可执行）_dijkstra算法步骤-CSDN博客</a></p>
-<p>我使用了一个二维数组<strong>weightTable</strong>来存储顶点之间的关系<br>另一个二维数组<strong>connectionTable</strong>来记录各个顶点是否相互连接<br>一个结构体数组<strong>DistanceTable</strong>来代替传统的S[]和U[]两个数组，用来记录某个顶点是否已经是确定状态（已经达到最小值，也就是上文途中的绿色节点）和当前最小值</p>
+<p>我使用了一个二维数组<strong>weightTable</strong>来存储顶点之间的关系<br>另一个二维数组<strong>connectionTable</strong>来记录各个顶点是否相互连接<br>一个结构体数组<strong>DistanceTable</strong>来代替传统的S[]和U[]两个数组，用来记录某个顶点是否已经是确定状态（已经达到最小值，也就是上文途中的绿色节点）和当前最小值<br>十六进制数<strong>0x7fffffff</strong>是int类型的最大值，用于表示<strong>无穷大</strong></p>
 <p><strong>代码:</strong></p>
 <div class="table-container">
 <table>
@@ -705,7 +706,7 @@ mjx-container[display="true"] + br {
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1698855513794"></script>
+    <script async src="/js/copy-codeblock.js?v=1698856012473"></script>
   
 
   
