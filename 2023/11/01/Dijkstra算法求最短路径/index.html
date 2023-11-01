@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en"><head>
+<title>Dijkstra算法求最短路径 - M1MisakaMikoto&#39;s Blog</title>
+<meta charset="UTF-8">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<meta name="description" content="迪杰斯特拉(Dijkstra)引子[摘自:最短路径算法-迪杰斯特拉(Dijkstra)算法 - 知乎 (zhihu.com)]最短路径算法-迪杰斯特拉(Dijkstra)算法迪杰斯特拉(Dijkstra)算法是典型最短路径算法，用于计算一个节点到其他节点的最短路径。它的主要特点是以起始点为中心向外层层扩展(广度优先遍历思想)，直到扩展到终点为止。 基本思想  通过Dijkstra计算图G中的最短路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dijkstra算法求最短路径">
+<meta property="og:url" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/index.html">
+<meta property="og:site_name" content="M1MisakaMikoto&#39;s Blog">
+<meta property="og:description" content="迪杰斯特拉(Dijkstra)引子[摘自:最短路径算法-迪杰斯特拉(Dijkstra)算法 - 知乎 (zhihu.com)]最短路径算法-迪杰斯特拉(Dijkstra)算法迪杰斯特拉(Dijkstra)算法是典型最短路径算法，用于计算一个节点到其他节点的最短路径。它的主要特点是以起始点为中心向外层层扩展(广度优先遍历思想)，直到扩展到终点为止。 基本思想  通过Dijkstra计算图G中的最短路">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step1.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step2.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step3.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step4.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step5.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step6.png">
+<meta property="article:published_time" content="2023-11-01T11:27:46.000Z">
+<meta property="article:modified_time" content="2023-11-01T16:39:32.849Z">
+<meta property="article:author" content="M1MisakaMikoto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png">
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698856935987">
+
+<link rel="stylesheet" href="/css/style.css?v=1698856935987">
+
+
+
+
+    
+        <link rel="stylesheet" href="/custom.css?v=1698856935987">
+    
+
+
+
+<script src="/lib/mdui_043tiny/mdui.js" async></script>
+<script src="/lib/fancybox/fancybox.umd.js" async></script>
+<script src="/lib/lax.min.js" async></script>
+
+
+<script async src="/js/app.js?v=1698856935987"></script>
+
+ 
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4D4ZJ9G024"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+
+  gtag("config", "G-4D4ZJ9G024");
+</script>
+
+
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body class="nexmoe mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image: url(/images/Screenshot 2023-10-30 135507.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"><a class="mdui-btn mdui-btn-icon mdui-ripple" mdui-drawer="{target: &#039;#drawer&#039;, swipe: true}" title="menu"><i class="mdui-icon nexmoefont icon-menu"></i></a><div class="mdui-toolbar-spacer"></div><a class="mdui-btn mdui-btn-icon" href="/" title="M1MisakaMikoto"><img src="/images/00063-2992489373-best quality, highly detailed, masterpiece, ultra-detailed, illustration, (misaka_mikoto_1.2),.png" alt="M1MisakaMikoto"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="M1MisakaMikoto">
+            <img src="/images/00063-2992489373-best quality, highly detailed, masterpiece, ultra-detailed, illustration, (misaka_mikoto_1.2),.png" alt="M1MisakaMikoto" alt="M1MisakaMikoto">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>5</div>
+        <div><span>Tags</span>0</div>
+        <div><span>Categories</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" target="_blank" rel="noopener" href="https://space.bilibili.com/51009504" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://qm.qq.com/q/R48EyTLiEi"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(249, 174, 8);
+				background-color: rgba(249, 174, 8, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/51009504"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/M1MisakaMikoto"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://twitter.com/M10261857637945"
+			target="_blank"
+			mdui-tooltip="{content: 'Twitter'}"
+			style="
+				color: rgb(59, 151, 239);
+				background-color: rgba(59, 151, 239, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-twitter"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/CS/">CS</a>
+          <span class="category-list-count">5</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+    
+        
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">Dijkstra算法求最短路径</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/31/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%A6%99%E7%94%A8vol-1/">位运算符的妙用vol.1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/30/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/30/2023-10-30-LearningRecord/">2023-10-30-LearningRecord</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/29/2023-10-29-LearningRecord/">2023-10-29-LearningRecord</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-link">
+		<ul>
+        
+            <li>
+                <a href="https://github.com/M1MisakaMikoto" target="_blank" >
+                    <img src="/images/00062-583270843-best quality, highly detailed, masterpiece, ultra-detailed, illustration, misaka mikoto, solo, open_mouth, looking_at_viewer, bl.png" alt="M1MisakaMikoto"></img>
+                    <p>M1MisakaMikoto</p>
+                </a>
+            </li>
+        
+		</ul>
+    </div>
+</div>
+<style>
+.nexmoe-widget-wrap .nexmoe-link ul li a {
+    text-align : center;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a img {
+    max-width : 100%;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a p {
+    margin: 10px 0;
+}
+</style>
+
+    
+   
+    <div class="nexmoe-copyright">
+        &copy; 2023 M1MisakaMikoto
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"> 
+    <div id="aplayer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/color-thief-don@2.0.2/src/color-thief.js"></script>
+    <script>
+      const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        autoplay: false, //自动播放
+        listFolded: true, //播放列表默认折叠
+        listMaxHeight: 90, //播放列表最大高度
+        order: 'list', //音频循环顺序, 可选值: 'list', 'random'
+        loop: 'all', //音频循环播放, 可选值: 'all', 'one', 'none'
+        theme: '#e9e9e9', //切换音频时的主题色，优先级低于audio.theme
+        preload: 'none', //音频预加载，可选值: 'none', 'metadata', 'auto'
+        mutex: true, //互斥，阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
+        lrcType: 3, //歌词格式，可选值：3（LRC文件歌词格式），1（JS字符串歌词格式）
+        volume: 0.7, //默认音量，请注意播放器会记忆用户设置，用户手动设置音量后默认音量即失效
+        fixed: true, //吸底模式（fixed:true），迷你模式（mini:true），普通模式（注释此行或者设置fixed:false）
+        audio: [{
+            name: 'Childhood Dreams',
+            artist: 'Gaminl',
+            lrc: '/lrc/Gaminl - Childhood Dreams.lrc',
+            cover: '/images/Gaminl - Childhood Dreams.jpg',
+            url: '/music/Gaminl - Childhood Dreams.mp3'
+          },{
+            name: 'All For Love',
+            artist: 'Tungevaag & Raaban',
+            lrc: '/lrc/Tungevaag & Raaban - All For Love.lrc',
+            cover: '/images/Tungevaag & Raaban - All For Love.jpg',
+            url: '/music/Tungevaag & Raaban - All For Love.mp3'
+          }
+        ]
+      });
+    
+      //实现切换音频时，根据音频的封面图片自适应主题色
+      const colorThief = new ColorThief();
+      const setTheme = (index) => {
+        if (!ap.list.audios[index].theme) {
+          colorThief.getColorAsync(ap.list.audios[index].cover, function(color) {
+            ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+          });
+        }
+      };
+      setTheme(ap.list.index);
+      ap.on('listswitch', (data) => {
+        setTheme(data.index);
+      });
+    </script>
+    </div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post">
+  <article>
+    
+        <div class="nexmoe-post-cover"> 
+            <img src="/images/Screenshot 2023-10-30 135507.png" alt="Dijkstra算法求最短路径" loading="lazy">
+            <h1>Dijkstra算法求最短路径</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
+    <div class="nexmoe-rainbow">
+        <a class="nexmoefont icon-calendar-fill">2023年11月01日</a>
+        
+            <a class="nexmoefont icon-appstore-fill -link" href="/categories/CS/">CS</a>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+    <h1 id="迪杰斯特拉-Dijkstra"><a href="#迪杰斯特拉-Dijkstra" class="headerlink" title="迪杰斯特拉(Dijkstra)"></a>迪杰斯特拉(Dijkstra)</h1><h1 id="引子-摘自-最短路径算法-迪杰斯特拉-Dijkstra-算法-知乎-zhihu-com"><a href="#引子-摘自-最短路径算法-迪杰斯特拉-Dijkstra-算法-知乎-zhihu-com" class="headerlink" title="引子[摘自:最短路径算法-迪杰斯特拉(Dijkstra)算法 - 知乎 (zhihu.com)]"></a>引子[摘自:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/346558578">最短路径算法-迪杰斯特拉(Dijkstra)算法 - 知乎 (zhihu.com)</a>]</h1><h2 id="最短路径算法-迪杰斯特拉-Dijkstra-算法"><a href="#最短路径算法-迪杰斯特拉-Dijkstra-算法" class="headerlink" title="最短路径算法-迪杰斯特拉(Dijkstra)算法"></a><strong>最短路径算法-迪杰斯特拉(Dijkstra)算法</strong></h2><p>迪杰斯特拉(Dijkstra)算法是典型最短路径算法，用于计算一个节点到其他节点的最短路径。<br>它的主要特点是以起始点为中心向外层层扩展(广度优先遍历思想)，直到扩展到终点为止。</p>
+<p><strong>基本思想</strong></p>
+<ol>
+<li>通过Dijkstra计算图G中的最短路径时，需要指定一个起点D(即从顶点D开始计算)。</li>
+<li>此外，引进两个数组S和U。S的作用是记录已求出最短路径的顶点(以及相应的最短路径长度)，而U则是记录还未求出最短路径的顶点(以及该顶点到起点D的距离)。</li>
+<li>初始时，数组S中只有起点D；数组U中是除起点D之外的顶点，并且数组U中记录各顶点到起点D的距离。如果顶点与起点D不相邻，距离为无穷大。</li>
+<li>然后，从数组U中找出路径最短的顶点K，并将其加入到数组S中；同时，从数组U中移除顶点K。接着，更新数组U中的各顶点到起点D的距离。</li>
+<li>重复第4步操作，直到遍历完所有顶点。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png" alt="import01.png" data-caption="import01.png" loading="lazy"></li>
+</ol>
+<h1 id="我的思考"><a href="#我的思考" class="headerlink" title="我的思考"></a>我的思考</h1><p><strong>图中我用绿色标记已经存入S[]中的节点，黄色标记已经计算过某条路径的节点（不一定是最小值）即U[]中非无穷大的节点, “*”代表<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.025ex" role="img" focusable="false" viewbox="0 -442 1000 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="221E" d="M55 217Q55 305 111 373T254 442Q342 442 419 381Q457 350 493 303L507 284L514 294Q618 442 747 442Q833 442 888 374T944 214Q944 128 889 59T743 -11Q657 -11 580 50Q542 81 506 128L492 147L485 137Q381 -11 252 -11Q166 -11 111 57T55 217ZM907 217Q907 285 869 341T761 397Q740 397 720 392T682 378T648 359T619 335T594 310T574 285T559 263T548 246L543 238L574 198Q605 158 622 138T664 94T714 61T765 51Q827 51 867 100T907 217ZM92 214Q92 145 131 89T239 33Q357 33 456 193L425 233Q364 312 334 337Q285 380 233 380Q171 380 132 331T92 214Z"/></g></g></g></svg></mjx-container></strong></p>
+<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step1.png" alt="step1.png" data-caption="step1.png" loading="lazy"><br><em>至此,我们凭什么认为C-&gt;D已经找到了最小路径呢？</em></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>证明：</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>C-&gt;D由(N_d + 1)条路径组成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对于C-&gt;E-&gt;D的路径</td>
+</tr>
+<tr>
+<td>总路径长度应小于 3</td>
+</tr>
+<tr>
+<td>在其他C-&gt;D路径中 若与D相连的路径没有小于 3 的 <strong>此处得证</strong></td>
+</tr>
+<tr>
+<td>在其他C-&gt;D路径中 若与D相连的路径有小于 3 的</td>
+</tr>
+<tr>
+<td>与第一步 选出最短节点操作相悖 该情况不存在 <strong>此处得证</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step2.png" alt="step2.png" data-caption="step2.png" loading="lazy"><br><em>同样的问题,我们凭什么认为E-&gt;D已经找到了最小路径呢？</em></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>证明：</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>对于 E-&gt;C-&gt;D 和 E-&gt;D 已完成对比 大小关系已确定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E-&gt;F-&gt;C 一定大于等于 E-&gt;C</td>
+</tr>
+<tr>
+<td>同理 E-&gt;G-&gt;F-&gt;C 一定大于等于 E-&gt;F-&gt;C 大于等于 E-&gt;C</td>
+</tr>
+<tr>
+<td>因此E-&gt;为最小路径</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step3.png" alt="step3.png" data-caption="step3.png" loading="lazy"><br><em>还是那个问题,我们凭什么认为F-&gt;E-&gt;D已经找到了最小路径呢？</em></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>证明:</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>F-&gt;C-&gt;E-&gt;D与F-&gt;E-&gt;C-&gt;D均大于等于F-&gt;C-&gt;D和F-&gt;E-&gt;D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对于F-&gt;C-&gt;D和F-&gt;E-&gt;D 已完成比较</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<p><strong>后续的步骤:</strong><br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step4.png" alt="step4.png" data-caption="step4.png" loading="lazy"><br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step5.png" alt="step5.png" data-caption="step5.png" loading="lazy"></p>
+<h3 id="规律总结"><a href="#规律总结" class="headerlink" title="规律总结"></a>规律总结</h3><p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step6.png" alt="step6.png" data-caption="step6.png" loading="lazy"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>先回到这一步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>对于E 非全绿路径路径数一定多于或等于全绿路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>因此非全绿路径的路径长一定大于或等于全绿路径的路径长</td>
+</tr>
+<tr>
+<td>而对于全绿路径，每个路径都会在之前的绿节点确认时进行了充分的对比</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> <br> </p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p><strong>参考实现方法:</strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37648020/article/details/83628375">路径规划求最短路径——Dijkstra算法一步一步讲清楚（附代码/可执行）_dijkstra算法步骤-CSDN博客</a></p>
+<p>我使用了一个二维数组<strong>weightTable</strong>来存储顶点之间的关系<br>另一个二维数组<strong>connectionTable</strong>来记录各个顶点是否相互连接<br>一个结构体数组<strong>DistanceTable</strong>来代替传统的S[]和U[]两个数组，用来记录某个顶点是否已经是确定状态（已经达到最小值，也就是上文途中的绿色节点）和当前最小值<br>十六进制数<strong>0x7fffffff</strong>是int类型的最大值，用于表示<strong>无穷大</strong></p>
+<p><strong>代码:</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Dijkstra.hpp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dijkstra</span> {</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="function"><span class="type">bool</span> <span class="title">IfLegal</span><span class="params">(<span class="type">int</span> nodeNumber)</span> </span>{</span><br><span class="line">		<span class="keyword">if</span> (nodeNumber &gt;= <span class="number">0</span> &amp;&amp; nodeNumber &lt;= nodeAccount - <span class="number">1</span>) {</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">FindAdjacentNearestNode</span><span class="params">(<span class="type">int</span> nodeNumber)</span> </span>{</span><br><span class="line">		<span class="type">int</span> nearestNodeWeight = <span class="number">0x7fffffff</span>;</span><br><span class="line">		<span class="type">int</span> nearestNode = <span class="number">-1</span>;</span><br><span class="line">		<span class="type">int</span> totalWeight;</span><br><span class="line">		<span class="type">int</span> i;</span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>-&gt;nodeAccount; i++) {</span><br><span class="line">			<span class="comment">//cout &lt;&lt; "i=" &lt;&lt; i &lt;&lt; ", nodeNumber=" &lt;&lt; nodeNumber &lt;&lt; endl;</span></span><br><span class="line">			<span class="comment">//cin.get();</span></span><br><span class="line">			<span class="keyword">if</span> (i != nodeNumber &amp;&amp; DistanceTable[i]-&gt;ifConfirm != <span class="literal">true</span>) {</span><br><span class="line">				totalWeight = DistanceTable[nodeNumber]-&gt;shortestDistance + weightTable[nodeNumber][i];</span><br><span class="line">				cout &lt;&lt; endl &lt;&lt; <span class="string">"i="</span> &lt;&lt; i &lt;&lt; <span class="string">", nodeNumber="</span> &lt;&lt; nodeNumber &lt;&lt; endl;</span><br><span class="line">				cout &lt;&lt; <span class="string">"weightTable[nodeNumber][i]="</span> &lt;&lt; weightTable[nodeNumber][i] &lt;&lt; endl;</span><br><span class="line">				cin.<span class="built_in">get</span>();</span><br><span class="line">				<span class="keyword">if</span> (connectionTable[nodeNumber][i] &amp;&amp; totalWeight &lt; DistanceTable[i]-&gt;shortestDistance) {</span><br><span class="line">					DistanceTable[i]-&gt;shortestDistance = totalWeight;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="comment">//cout &lt;&lt; "nearestNode=" &lt;&lt; nearestNode &lt;&lt; endl;</span></span><br><span class="line">		<span class="comment">//cin.get();</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nodeAccount; i++) {</span><br><span class="line">			<span class="keyword">if</span> (DistanceTable[i]-&gt;ifConfirm == <span class="literal">false</span> &amp;&amp; DistanceTable[i]-&gt;shortestDistance &lt; nearestNodeWeight) {</span><br><span class="line">				nearestNodeWeight = DistanceTable[i]-&gt;shortestDistance;</span><br><span class="line">				nearestNode = i;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">if</span> (nearestNode != <span class="number">-1</span>) {</span><br><span class="line">			DistanceTable[nearestNode]-&gt;ifConfirm = <span class="literal">true</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">return</span> nearestNode;</span><br><span class="line">	}</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Dijkstra</span>(<span class="type">int</span> nodeAccount) {</span><br><span class="line">		<span class="keyword">this</span>-&gt;nodeAccount = nodeAccount;</span><br><span class="line">		weightTable = <span class="keyword">new</span> <span class="type">int</span>* [<span class="keyword">this</span>-&gt;nodeAccount];</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>-&gt;nodeAccount; i++) {</span><br><span class="line">			weightTable[i] = <span class="keyword">new</span> <span class="type">int</span>[<span class="keyword">this</span>-&gt;nodeAccount];</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="keyword">this</span>-&gt;nodeAccount; j++) {</span><br><span class="line">				weightTable[i][j] = <span class="number">0x7fffffff</span>;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		connectionTable = <span class="keyword">new</span> <span class="type">bool</span>* [<span class="keyword">this</span>-&gt;nodeAccount];</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>-&gt;nodeAccount; i++) {</span><br><span class="line">			connectionTable[i] = <span class="keyword">new</span> <span class="type">bool</span>[<span class="keyword">this</span>-&gt;nodeAccount];</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="keyword">this</span>-&gt;nodeAccount; j++) {</span><br><span class="line">				connectionTable[i][j] = <span class="literal">false</span>;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		DistanceTable = <span class="keyword">new</span> NodeAttribute * [<span class="keyword">this</span>-&gt;nodeAccount];</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>-&gt;nodeAccount; i++) {</span><br><span class="line">			DistanceTable[i] = <span class="keyword">new</span> NodeAttribute;</span><br><span class="line">			DistanceTable[i]-&gt;ifConfirm = <span class="literal">false</span>;</span><br><span class="line">			DistanceTable[i]-&gt;shortestDistance = <span class="number">0x7fffffff</span>;</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">bool</span> <span class="title">BuildLink</span><span class="params">(<span class="type">int</span> beginNode, <span class="type">int</span> endNode, <span class="type">int</span> weight)</span> </span>{</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">IfLegal</span>(beginNode) &amp;&amp; <span class="built_in">IfLegal</span>(endNode)) {</span><br><span class="line">			weightTable[beginNode][endNode] = weight;</span><br><span class="line">			connectionTable[beginNode][endNode] = <span class="literal">true</span>;</span><br><span class="line">			weightTable[endNode][beginNode] = weight;</span><br><span class="line">			connectionTable[endNode][beginNode] = <span class="literal">true</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">bool</span> <span class="title">GetIndex</span><span class="params">(<span class="type">int</span> rootNode, <span class="type">int</span>* receiveArray, <span class="type">int</span> arraySize)</span> </span>{</span><br><span class="line">		<span class="keyword">if</span> (arraySize != <span class="keyword">this</span>-&gt;nodeAccount) {</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		}</span><br><span class="line">		DistanceTable[rootNode]-&gt;shortestDistance = <span class="number">0</span>;</span><br><span class="line">		DistanceTable[rootNode]-&gt;ifConfirm = <span class="literal">true</span>;</span><br><span class="line">		<span class="type">int</span> nextNode = <span class="built_in">FindAdjacentNearestNode</span>(rootNode);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nodeAccount; i++) {</span><br><span class="line">			<span class="keyword">if</span> (nextNode == <span class="number">-1</span>) {</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">			nextNode = <span class="built_in">FindAdjacentNearestNode</span>(nextNode);</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nodeAccount; i++) {</span><br><span class="line">			receiveArray[i] = DistanceTable[i]-&gt;shortestDistance;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	~<span class="built_in">Dijkstra</span>() {</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>-&gt;nodeAccount; i++) {</span><br><span class="line">			<span class="keyword">delete</span>[] weightTable[i];</span><br><span class="line">			<span class="keyword">delete</span>[] connectionTable[i];</span><br><span class="line">			<span class="keyword">delete</span> DistanceTable[i];</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">delete</span>[] weightTable;</span><br><span class="line">		<span class="keyword">delete</span>[] connectionTable;</span><br><span class="line">		<span class="keyword">delete</span>[] DistanceTable;</span><br><span class="line">	}</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="type">int</span> nodeAccount;</span><br><span class="line">	<span class="type">int</span>** weightTable;</span><br><span class="line">	<span class="type">bool</span>** connectionTable;</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">NodeAttribute</span> {</span><br><span class="line">		<span class="type">bool</span> ifConfirm;</span><br><span class="line">		<span class="type">int</span> shortestDistance;</span><br><span class="line">	};</span><br><span class="line">	NodeAttribute** DistanceTable;</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<p> </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>main.cpp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">"Dijkstra.hpp"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line">	<span class="function">Dijkstra <span class="title">DijkstraMap</span><span class="params">(<span class="number">7</span>)</span></span>;</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">12</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">0</span>, <span class="number">5</span>, <span class="number">16</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">0</span>, <span class="number">6</span>, <span class="number">14</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">1</span>, <span class="number">5</span>, <span class="number">7</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">6</span>, <span class="number">5</span>, <span class="number">9</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">6</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">5</span>, <span class="number">4</span>, <span class="number">2</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">	DijkstraMap.<span class="built_in">BuildLink</span>(<span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">	<span class="type">int</span> result[<span class="number">7</span>];</span><br><span class="line">	DijkstraMap.<span class="built_in">GetIndex</span>(<span class="number">3</span>, result, <span class="number">7</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">7</span>; i++) {</span><br><span class="line">		cout &lt;&lt; result[i] &lt;&lt; endl;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p><strong>以上代码托管于：</strong><a target="_blank" rel="noopener" href="https://github.com/M1MisakaMikoto/Dijkstra">我的github仓库</a></p>
+
+    <p><img src="/images/end.gif" loading="lazy"></p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>M1MisakaMikoto<br>
+        <strong>Link：</strong><a href="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" title="http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;01&#x2F;Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;01&#x2F;Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+</div>
+  
+  
+    <script async src="/js/copy-codeblock.js?v=1698856935936"></script>
+  
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div></div><div class="nexmoe-post-right">    <div class="nexmoe-fixed">
+        <div class="nexmoe-tool">
+
+            
+
+            
+            
+            <button class="mdui-fab catalog" style="overflow:unset;">
+                <i class="nexmoefont icon-i-catalog"></i>
+                <div class="nexmoe-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89-Dijkstra"><span class="toc-number">1.</span> <span class="toc-text">迪杰斯特拉(Dijkstra)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E5%AD%90-%E6%91%98%E8%87%AA-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89-Dijkstra-%E7%AE%97%E6%B3%95-%E7%9F%A5%E4%B9%8E-zhihu-com"><span class="toc-number">2.</span> <span class="toc-text">引子[摘自:最短路径算法-迪杰斯特拉(Dijkstra)算法 - 知乎 (zhihu.com)]</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89-Dijkstra-%E7%AE%97%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">最短路径算法-迪杰斯特拉(Dijkstra)算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">我的思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%BE%8B%E6%80%BB%E7%BB%93"><span class="toc-number">3.0.1.</span> <span class="toc-text">规律总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">代码实现</span></a></li></ol>
+                </div>
+            </button>
+            
+
+            
+
+            <a href="#nexmoe-content" class="backtop toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+        </div>
+    </div>
+</div></div><div id="nexmoe-footer"><!--!--></div><div id="nexmoe-search-space"><div class="search-container"><div class="search-header"><div class="search-input-container"><input class="search-input" type="text" placeholder="Search" onInput="sinput();"></div><a class="search-close" onclick="sclose();">×</a></div><div class="search-body"></div></div></div><div><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+</div></body></html>
