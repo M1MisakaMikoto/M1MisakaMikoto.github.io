@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step5.png">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step6.png">
 <meta property="article:published_time" content="2023-11-01T11:27:46.000Z">
-<meta property="article:modified_time" content="2023-11-01T16:26:42.109Z">
+<meta property="article:modified_time" content="2023-11-01T16:29:10.555Z">
 <meta property="article:author" content="M1MisakaMikoto">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png">
@@ -30,15 +30,15 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698856012486">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1698856158402">
 
-<link rel="stylesheet" href="/css/style.css?v=1698856012486">
+<link rel="stylesheet" href="/css/style.css?v=1698856158402">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1698856012486">
+        <link rel="stylesheet" href="/custom.css?v=1698856158402">
     
 
 
@@ -48,7 +48,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1698856012486"></script>
+<script async src="/js/app.js?v=1698856158402"></script>
 
  
 
@@ -503,7 +503,7 @@ mjx-container[display="true"] + br {
 <li>然后，从数组U中找出路径最短的顶点K，并将其加入到数组S中；同时，从数组U中移除顶点K。接着，更新数组U中的各顶点到起点D的距离。</li>
 <li>重复第4步操作，直到遍历完所有顶点。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/import01.png" alt="import01.png" data-caption="import01.png" loading="lazy"></li>
 </ol>
-<h1 id="我的思考"><a href="#我的思考" class="headerlink" title="我的思考"></a>我的思考</h1><p><strong>图中我用绿色标记已经存入S[]中的节点，黄色标记已经计算过某条路径的节点（不一定是最小值）即U[]中非无穷大的节点</strong></p>
+<h1 id="我的思考"><a href="#我的思考" class="headerlink" title="我的思考"></a>我的思考</h1><p><strong>图中我用绿色标记已经存入S[]中的节点，黄色标记已经计算过某条路径的节点（不一定是最小值）即U[]中非无穷大的节点, “*”代表<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.025ex" role="img" focusable="false" viewbox="0 -442 1000 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="221E" d="M55 217Q55 305 111 373T254 442Q342 442 419 381Q457 350 493 303L507 284L514 294Q618 442 747 442Q833 442 888 374T944 214Q944 128 889 59T743 -11Q657 -11 580 50Q542 81 506 128L492 147L485 137Q381 -11 252 -11Q166 -11 111 57T55 217ZM907 217Q907 285 869 341T761 397Q740 397 720 392T682 378T648 359T619 335T594 310T574 285T559 263T548 246L543 238L574 198Q605 158 622 138T664 94T714 61T765 51Q827 51 867 100T907 217ZM92 214Q92 145 131 89T239 33Q357 33 456 193L425 233Q364 312 334 337Q285 380 233 380Q171 380 132 331T92 214Z"/></g></g></g></svg></mjx-container></strong></p>
 <p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/01/Dijkstra%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/step1.png" alt="step1.png" data-caption="step1.png" loading="lazy"><br><em>至此,我们凭什么认为C-&gt;D已经找到了最小路径呢？</em></p>
 <div class="table-container">
 <table>
@@ -706,7 +706,7 @@ mjx-container[display="true"] + br {
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1698856012473"></script>
+    <script async src="/js/copy-codeblock.js?v=1698856158388"></script>
   
 
   
