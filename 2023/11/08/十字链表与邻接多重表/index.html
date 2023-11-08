@@ -6,19 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<meta name="description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次">
+<meta name="description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次 边集数组边集数组其实和我在上文解释十字链表和邻接多重表的时候框">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十字链表与邻接多重表">
 <meta property="og:url" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/index.html">
 <meta property="og:site_name" content="M1MisakaMikoto&#39;s Blog">
-<meta property="og:description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次">
+<meta property="og:description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次 边集数组边集数组其实和我在上文解释十字链表和邻接多重表的时候框">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture02.png">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture03.png">
 <meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture04.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture05.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture06.png">
 <meta property="article:published_time" content="2023-11-08T12:28:24.000Z">
-<meta property="article:modified_time" content="2023-11-08T12:44:30.041Z">
+<meta property="article:modified_time" content="2023-11-08T13:05:51.716Z">
 <meta property="article:author" content="M1MisakaMikoto">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png">
@@ -27,15 +29,15 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1699447536237">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1699448771110">
 
-<link rel="stylesheet" href="/css/style.css?v=1699447536237">
+<link rel="stylesheet" href="/css/style.css?v=1699448771110">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1699447536237">
+        <link rel="stylesheet" href="/custom.css?v=1699448771110">
     
 
 
@@ -45,7 +47,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1699447536238"></script>
+<script async src="/js/app.js?v=1699448771110"></script>
 
  
 
@@ -498,9 +500,10 @@ mjx-container[display="true"] + br {
     
 </div>
 
-    <h5 id="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解"><a href="#本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解" class="headerlink" title="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解"></a>本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解</h5><h1 id="十字链表"><a href="#十字链表" class="headerlink" title="十字链表"></a>十字链表</h1><p><strong>十字链表</strong>是 <strong>有向邻接表</strong> 和 <strong>有向逆邻接表</strong> 的结合<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png" alt><br>把两个表压缩进了一个表</p>
+    <h5 id="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组"><a href="#本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组" class="headerlink" title="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组"></a>本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组</h5><h1 id="十字链表"><a href="#十字链表" class="headerlink" title="十字链表"></a>十字链表</h1><p><strong>十字链表</strong>是 <strong>有向邻接表</strong> 和 <strong>有向逆邻接表</strong> 的结合<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png" alt><br>把两个表压缩进了一个表</p>
 <h1 id="邻接多重表"><a href="#邻接多重表" class="headerlink" title="邻接多重表"></a>邻接多重表</h1><p><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture02.png" alt></p>
 <p>邻接多重表是 <strong>无向邻接表</strong>（无向邻接表 = 存储意义不同但结构相同的有向邻接表）的压缩版本<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture03.png" alt><br><em>无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次</em><br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture04.png" alt></p>
+<h1 id="边集数组"><a href="#边集数组" class="headerlink" title="边集数组"></a>边集数组</h1><p>边集数组其实和我在上文解释十字链表和邻接多重表的时候框出来的两个域有异曲同工之妙<br>只不过我框出来的域在实际储存结构中是不存在的，只是为了方便理解，在图里框出来的<br>而边集数组则是在实际储存结构中，用一整个二维数组来代替那一堆分散的链表<br>使用边集数组的好处是结构清晰，但也有查询度时需要遍历整个数组的缺点<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture05.png" alt><br><strong>或许可以结合一下？↓</strong><br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture06.png" alt><br>举个例子：求0的出度<br>①先遍历找到第一个[begin]为0的边<br>②去[同[begin]的下一条边]里找下一条边<br>③当[同[begin]的下一条边]为空时，查找结束</p>
 
     <p><img src="/images/end.gif" loading="lazy"></p>
 
@@ -526,7 +529,7 @@ mjx-container[display="true"] + br {
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1699447536222"></script>
+    <script async src="/js/copy-codeblock.js?v=1699448771068"></script>
   
 
   
@@ -544,7 +547,7 @@ mjx-container[display="true"] + br {
             <button class="mdui-fab catalog" style="overflow:unset;">
                 <i class="nexmoefont icon-i-catalog"></i>
                 <div class="nexmoe-toc">
-                    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E7%AF%87%E8%AE%B0%E5%BD%95%E4%BA%86%E6%88%91%E5%AF%B9%E3%80%8A%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E3%80%8B%E4%B8%80%E4%B9%A6%E4%B8%AD%EF%BC%8C%E5%AF%B9%E5%9B%BE%E7%9A%84%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E5%82%A8%E5%AD%98%E7%BB%93%E6%9E%84%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">十字链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">邻接多重表</span></a>
+                    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E7%AF%87%E8%AE%B0%E5%BD%95%E4%BA%86%E6%88%91%E5%AF%B9%E3%80%8A%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E3%80%8B%E4%B8%80%E4%B9%A6%E4%B8%AD%EF%BC%8C%E5%AF%B9%E5%9B%BE%E7%9A%84%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E5%82%A8%E5%AD%98%E7%BB%93%E6%9E%84%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E9%A1%BA%E5%B8%A6%E6%B5%85%E8%B0%88%E4%B8%80%E4%B8%8B%E8%BE%B9%E9%9B%86%E6%95%B0%E7%BB%84"><span class="toc-number">1.</span> <span class="toc-text">本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">十字链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">邻接多重表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%B9%E9%9B%86%E6%95%B0%E7%BB%84"><span class="toc-number"></span> <span class="toc-text">边集数组</span></a>
                 </div>
             </button>
             
