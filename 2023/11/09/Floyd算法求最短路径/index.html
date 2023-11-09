@@ -1,43 +1,39 @@
 <!doctype html>
 <html lang="en"><head>
-<title>十字链表与邻接多重表 - M1MisakaMikoto&#39;s Blog</title>
+<title>Floyd算法求最短路径 - M1MisakaMikoto&#39;s Blog</title>
 <meta charset="UTF-8">
 <meta name="keywords" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<meta name="description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次 边集数组边集数组其实和我在上文解释十字链表和邻接多重表的时候框">
+<meta name="description" content="Floyd算法这是一个代码非常简洁的求最短路径算法，让人不禁感叹：“这就完啦？” 弗洛伊德（Floyd）算法求图的最短路径_弗洛伊德算法求最短路径-CSDN博客Floyd算法以中介点（我更喜欢叫它中间点，因为这个中间点和作为判断对象的另外两个点不一定直接相连）为切入口 遍历所有可能的路径 不断取最小路径 快速使用：1234for (int k &#x3D; 0; k &lt; n; ++k)    for">
 <meta property="og:type" content="article">
-<meta property="og:title" content="十字链表与邻接多重表">
-<meta property="og:url" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/index.html">
+<meta property="og:title" content="Floyd算法求最短路径">
+<meta property="og:url" content="http://m1misakamikoto.github.io/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/index.html">
 <meta property="og:site_name" content="M1MisakaMikoto&#39;s Blog">
-<meta property="og:description" content="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组十字链表十字链表是 有向邻接表 和 有向逆邻接表 的结合把两个表压缩进了一个表 邻接多重表 邻接多重表是 无向邻接表（无向邻接表 &#x3D; 存储意义不同但结构相同的有向邻接表）的压缩版本无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次 边集数组边集数组其实和我在上文解释十字链表和邻接多重表的时候框">
+<meta property="og:description" content="Floyd算法这是一个代码非常简洁的求最短路径算法，让人不禁感叹：“这就完啦？” 弗洛伊德（Floyd）算法求图的最短路径_弗洛伊德算法求最短路径-CSDN博客Floyd算法以中介点（我更喜欢叫它中间点，因为这个中间点和作为判断对象的另外两个点不一定直接相连）为切入口 遍历所有可能的路径 不断取最小路径 快速使用：1234for (int k &#x3D; 0; k &lt; n; ++k)    for">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture02.png">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture03.png">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture04.png">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture05.png">
-<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture06.png">
-<meta property="article:published_time" content="2023-11-08T12:28:24.000Z">
-<meta property="article:modified_time" content="2023-11-08T13:05:51.716Z">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/picture02.png">
+<meta property="og:image" content="http://m1misakamikoto.github.io/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/picture01.png">
+<meta property="article:published_time" content="2023-11-09T12:42:50.000Z">
+<meta property="article:modified_time" content="2023-11-09T14:15:26.103Z">
 <meta property="article:author" content="M1MisakaMikoto">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png">
+<meta name="twitter:image" content="http://m1misakamikoto.github.io/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/picture02.png">
 
 <link rel="stylesheet" href="/lib/fancybox/fancybox.css">
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1699539359640">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1699539359627">
 
-<link rel="stylesheet" href="/css/style.css?v=1699539359640">
+<link rel="stylesheet" href="/css/style.css?v=1699539359627">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1699539359640">
+        <link rel="stylesheet" href="/custom.css?v=1699539359627">
     
 
 
@@ -47,7 +43,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1699539359640"></script>
+<script async src="/js/app.js?v=1699539359627"></script>
 
  
 
@@ -482,14 +478,14 @@ mjx-container[display="true"] + br {
   <article>
     
         <div class="nexmoe-post-cover"> 
-            <img src="/images/Screenshot 2023-10-30 135507.png" alt="十字链表与邻接多重表" loading="lazy">
-            <h1>十字链表与邻接多重表</h1>
+            <img src="/images/Screenshot 2023-10-30 135507.png" alt="Floyd算法求最短路径" loading="lazy">
+            <h1>Floyd算法求最短路径</h1>
         </div>
     
     
     <div class="nexmoe-post-meta">
     <div class="nexmoe-rainbow">
-        <a class="nexmoefont icon-calendar-fill">2023年11月08日</a>
+        <a class="nexmoefont icon-calendar-fill">2023年11月09日</a>
         
         
     </div>
@@ -500,10 +496,12 @@ mjx-container[display="true"] + br {
     
 </div>
 
-    <h5 id="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组"><a href="#本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组" class="headerlink" title="本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组"></a>本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组</h5><h1 id="十字链表"><a href="#十字链表" class="headerlink" title="十字链表"></a>十字链表</h1><p><strong>十字链表</strong>是 <strong>有向邻接表</strong> 和 <strong>有向逆邻接表</strong> 的结合<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture01.png" alt><br>把两个表压缩进了一个表</p>
-<h1 id="邻接多重表"><a href="#邻接多重表" class="headerlink" title="邻接多重表"></a>邻接多重表</h1><p><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture02.png" alt></p>
-<p>邻接多重表是 <strong>无向邻接表</strong>（无向邻接表 = 存储意义不同但结构相同的有向邻接表）的压缩版本<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture03.png" alt><br><em>无向邻接表中每一条边都被记录了两次，而邻接多重表里每个边只记录了一次</em><br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture04.png" alt></p>
-<h1 id="边集数组"><a href="#边集数组" class="headerlink" title="边集数组"></a>边集数组</h1><p>边集数组其实和我在上文解释十字链表和邻接多重表的时候框出来的两个域有异曲同工之妙<br>只不过我框出来的域在实际储存结构中是不存在的，只是为了方便理解，在图里框出来的<br>而边集数组则是在实际储存结构中，用一整个二维数组来代替那一堆分散的链表<br>使用边集数组的好处是结构清晰，但也有查询度时需要遍历整个数组的缺点<br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture05.png" alt><br><strong>或许可以结合一下？↓</strong><br><img src="/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/picture06.png" alt><br>举个例子：求0的出度<br>①先遍历找到第一个[begin]为0的边<br>②去[同[begin]的下一条边]里找下一条边<br>③当[同[begin]的下一条边]为空时，查找结束</p>
+    <h1 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h1><p><em>这是一个代码非常简洁的求最短路径算法，让人不禁感叹：“这就完啦？”</em></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jeffleo/article/details/53349825">弗洛伊德（Floyd）算法求图的最短路径_弗洛伊德算法求最短路径-CSDN博客</a><br>Floyd算法以中介点（我更喜欢叫它中间点，因为这个中间点和作为判断对象的另外两个点不一定直接相连）为切入口 遍历所有可能的路径 不断取最小路径<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/picture02.png" alt="QAQ" data-caption="QAQ" loading="lazy"></p>
+<h3 id="快速使用："><a href="#快速使用：" class="headerlink" title="快速使用："></a>快速使用：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; n; ++k)</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; ++j)</span><br><span class="line">            dist[i][j] = <span class="built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span><br></pre></td></tr></table></figure>
+<h3 id="Floyd算法为什么不会漏？↓"><a href="#Floyd算法为什么不会漏？↓" class="headerlink" title="Floyd算法为什么不会漏？↓"></a>Floyd算法为什么不会漏？↓</h3><p><img onerror="imgOnError(this);" data-fancybox="gallery" src="/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/picture01.png" alt="qwq" data-caption="qwq" loading="lazy"><br>补充：对于v4-&gt;v7最短路径=v4-&gt;v6-&gt;v3-&gt;v7<br>如果调换v3和v6位置 当k=6时 还会判断一次v4-&gt;v7的最短路径 <em>并不是挨着的顶点才更新</em> 三层循环会遍历所有的情况<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ljhandlwt/article/details/52096932">floyd算法:我们真的明白floyd吗?_佛罗伊德算法为什么可以求出最短路径-CSDN博客</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Floyd算法用k表示中间点编号<br>用i和j遍历整个表来更新最短路径<br>这个算法始终在求解一个问题：</p>
+<p>|—-|<br>|<strong><em>如果我从i到j的途中经过k 这条路会更短吗？</em></strong>|</p>
 
     <p><img src="/images/end.gif" loading="lazy"></p>
 
@@ -513,7 +511,7 @@ mjx-container[display="true"] + br {
       
     <div class="nexmoe-post-copyright">
         <strong>Author：</strong>M1MisakaMikoto<br>
-        <strong>Link：</strong><a href="http://m1misakamikoto.github.io/2023/11/08/%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8/" title="http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;08&#x2F;%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;08&#x2F;%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E4%B8%8E%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8&#x2F;</a><br>
+        <strong>Link：</strong><a href="http://m1misakamikoto.github.io/2023/11/09/Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" title="http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;09&#x2F;Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;m1misakamikoto.github.io&#x2F;2023&#x2F;11&#x2F;09&#x2F;Floyd%E7%AE%97%E6%B3%95%E6%B1%82%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
 
@@ -529,7 +527,7 @@ mjx-container[display="true"] + br {
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1699539359574"></script>
+    <script async src="/js/copy-codeblock.js?v=1699539359571"></script>
   
 
   
@@ -547,7 +545,7 @@ mjx-container[display="true"] + br {
             <button class="mdui-fab catalog" style="overflow:unset;">
                 <i class="nexmoefont icon-i-catalog"></i>
                 <div class="nexmoe-toc">
-                    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E7%AF%87%E8%AE%B0%E5%BD%95%E4%BA%86%E6%88%91%E5%AF%B9%E3%80%8A%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E3%80%8B%E4%B8%80%E4%B9%A6%E4%B8%AD%EF%BC%8C%E5%AF%B9%E5%9B%BE%E7%9A%84%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E5%82%A8%E5%AD%98%E7%BB%93%E6%9E%84%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%8C%E9%A1%BA%E5%B8%A6%E6%B5%85%E8%B0%88%E4%B8%80%E4%B8%8B%E8%BE%B9%E9%9B%86%E6%95%B0%E7%BB%84"><span class="toc-number">1.</span> <span class="toc-text">本篇记录了我对《大话数据结构》一书中，对图的十字链表储存结构的理解，顺带浅谈一下边集数组</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">十字链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8"><span class="toc-number"></span> <span class="toc-text">邻接多重表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%B9%E9%9B%86%E6%95%B0%E7%BB%84"><span class="toc-number"></span> <span class="toc-text">边集数组</span></a>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Floyd%E7%AE%97%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">Floyd算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.0.1.</span> <span class="toc-text">快速使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Floyd%E7%AE%97%E6%B3%95%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BC%9A%E6%BC%8F%EF%BC%9F%E2%86%93"><span class="toc-number">1.0.2.</span> <span class="toc-text">Floyd算法为什么不会漏？↓</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.0.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol>
                 </div>
             </button>
             
